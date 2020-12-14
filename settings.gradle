@@ -1,0 +1,2 @@
+include ':app', ':facemodel', ':faceSdk'
+rootProject.name='FaceSdkProject'
