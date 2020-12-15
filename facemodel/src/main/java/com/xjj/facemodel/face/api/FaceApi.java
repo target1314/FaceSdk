@@ -247,13 +247,14 @@ public class FaceApi {
      * 提取特征值
      */
     public ImportFeatureResult getFeature(Bitmap bitmap, byte[] feature, BDFaceSDKCommon.FeatureType featureType) {
+
         if (bitmap == null) {
             return new ImportFeatureResult(-1, null);
         }
 
         BDFaceImageInstance imageInstance = new BDFaceImageInstance(bitmap);
         // 最大检测人脸，获取人脸信息
-        FaceInfo[] faceInfos = FaceSDKManager.getInstance().getFaceDetect()
+        FaceInfo[] faceInfos = FaceSDKManager.getInstance().getFaceDetectPerson()
                 .detect(BDFaceSDKCommon.DetectType.DETECT_VIS, imageInstance);
         if (faceInfos == null || faceInfos.length == 0) {
             imageInstance.destory();
@@ -261,7 +262,7 @@ public class FaceApi {
         }
         FaceInfo faceInfo = faceInfos[0];
         // 人脸识别，提取人脸特征值
-        float ret = FaceSDKManager.getInstance().getFaceFeature().feature(
+        float ret = FaceSDKManager.getInstance().getFaceFeaturePerson().feature(
                 featureType, imageInstance,
                 faceInfo.landmarks, feature);
         // 人脸抠图
@@ -299,8 +300,8 @@ public class FaceApi {
         // 7、根据姓名查询数据库与文件中对应的姓名是否相等，如果相等，则直接过滤
         List<User> listUsers = FaceApi.getInstance().getUserListByUserName(userName);
         if (listUsers != null && listUsers.size() > 0) {
-            for (User userItem : listUsers) {
-                if (userItem.getUserName().equals(userName)) {
+            for (User userItem:listUsers){
+                if (userItem.getUserName().equals(userName)){
                     boolean success = DBManager.getInstance().deleteUserId(userName.split("-")[0]);
                 }
             }

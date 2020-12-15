@@ -27,7 +27,7 @@ public class BaseConfig {
     // 默认为max。分为"max" 、"none"三个方式，分别是最大人脸 ，和不检测人脸
     private String trackType = "max";
     // 默认为80px。可传入大于50px的数值，小于此大小的人脸不予检测
-    private int minimumFace = 30;
+    private int minimumFace = 80;
     // 模糊度设置，默认0.5。取值范围[0~1]，0是最清晰，1是最模糊
     private float blur = 0.5f;
     // 光照设置，默认40.取值范围[0~255], 数值越大，光线越强
@@ -71,16 +71,16 @@ public class BaseConfig {
     // RGB活体：2
     // RGB+NIR活体：3
     // RGB+Depth活体：4
-    private int type = 1;
+    private int type = 2;
     // 是否开启质量检测开关
     private boolean qualityControl = false;
     // RGB活体阀值
-    private float rgbLiveScore = 0.90f;
+    private float rgbLiveScore = 0.80f;
     // NIR活体阀值
-    private float nirLiveScore = 0.90f;
+    private float nirLiveScore = 0.80f;
 
     // Depth活体阀值
-    private float depthLiveScore = 0.90f;
+    private float depthLiveScore = 0.80f;
 
     // 0:奥比中光Astra Mini、Mini S系列(结构光)
     // 1:奥比中光 Astra Pro 、Pro S 、蝴蝶（结构光）

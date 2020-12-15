@@ -112,6 +112,22 @@ public class FaceSDKManager {
         return faceDetect;
     }
 
+    public FaceDetect getFaceDetectPerson() {
+        return faceDetectPerson;
+    }
+
+    public void setFaceDetectPerson(FaceDetect faceDetectPerson) {
+        this.faceDetectPerson = faceDetectPerson;
+    }
+
+    public FaceFeature getFaceFeaturePerson() {
+        return faceFeaturePerson;
+    }
+
+    public void setFaceFeaturePerson(FaceFeature faceFeaturePerson) {
+        this.faceFeaturePerson = faceFeaturePerson;
+    }
+
     public FaceFeature getFaceFeature() {
         return faceFeature;
     }
@@ -148,7 +164,7 @@ public class FaceSDKManager {
         // 如果licenseKey 不存在提示授权码为空，并跳转授权页面授权
         if (TextUtils.isEmpty(licenseOfflineKey) && TextUtils.isEmpty(licenseOnlineKey)
                 && TextUtils.isEmpty(licenseBatchlineKey)) {
-           // ToastUtils.toast(context, "未授权设备，请完成授权激活");
+            // ToastUtils.toast(context, "未授权设备，请完成授权激活");
             if (listener != null) {
                 listener.initLicenseFail(-1, "授权码不存在，请重新输入！");
             }
@@ -413,8 +429,8 @@ public class FaceSDKManager {
 
         faceFeaturePerson.initModel(context,
                 GlobalSet.RECOGNIZE_IDPHOTO_MODEL,
-                "",
-                "",
+                GlobalSet.RECOGNIZE_VIS_MODEL,
+                GlobalSet.RECOGNIZE_NIR_MODEL,
                 new Callback() {
                     @Override
                     public void onResponse(int code, String response) {
