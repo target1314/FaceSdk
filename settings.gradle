@@ -1,2 +1,2 @@
-include ':app', ':facemodel', ':faceSdk'
+include ':app', ':facemodel'
 rootProject.name='FaceSdkProject'
