@@ -1,8 +1,12 @@
 package com.xjj.facemodel.face.camera;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
@@ -10,8 +14,13 @@ import android.view.TextureView;
 
 import com.xjj.facemodel.face.callback.CameraDataCallback;
 import com.xjj.facemodel.face.model.SingleBaseConfig;
+import com.xjj.facemodel.face.utils.BitmapUtils;
 
 import java.util.List;
+
+import static android.view.Gravity.BOTTOM;
+import static android.view.Gravity.RIGHT;
+import static android.view.Gravity.TOP;
 
 /**
  * Time: 2019/1/24
@@ -70,6 +79,11 @@ public class CameraPreviewManager implements TextureView.SurfaceTextureListener 
     private int mirror = 1; // 镜像处理
     private CameraDataCallback mCameraDataCallback;
     private static volatile CameraPreviewManager instance = null;
+    private int mCurrentCameraFacing;//当前摄像头
+    private OnCameraActionCallback mOnCameraActionCallback;
+    private byte[] mCameraData;//拍照返回的图像数据
+    private ToneGenerator mToneGenerator;
+    private int mDeviceOrientation = TOP;
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
@@ -340,4 +354,70 @@ public class CameraPreviewManager implements TextureView.SurfaceTextureListener 
         }
         return optimalSize;
     }
+    public interface OnCameraActionCallback {
+        void onTakePictureComplete(Bitmap bitmap);
+    }
+
+
+    /**
+     * 拍照
+     */
+    public void takePicture(OnCameraActionCallback callback) {
+        mOnCameraActionCallback = callback;
+        if (mCamera != null) {
+            mCamera.takePicture(null, null, mJpegPictureCallback);
+        }
+    }
+
+
+    //快门按下的回调，在这里我们可以设置类似播放“咔嚓”声之类的操作。默认的就是咔嚓。
+    private Camera.ShutterCallback mShutterCallback = new Camera.ShutterCallback() {
+
+        public void onShutter() {
+            // TODO Auto-generated method stub
+            if (mToneGenerator == null) {
+                //发出提示用户的声音
+                mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,
+                        ToneGenerator.MAX_VOLUME);
+            }
+            mToneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2);
+        }
+    };
+
+    //对jpeg图像数据的回调
+    private Camera.PictureCallback mJpegPictureCallback = new Camera.PictureCallback() {
+
+        public void onPictureTaken(byte[] data, Camera camera) {
+            //mCameraData = data;
+            if (mOnCameraActionCallback != null) {
+                mCamera.cancelAutoFocus();
+                //恢复对焦模式
+                mCamera.getParameters().setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                mCamera.getParameters().setFocusAreas(null);
+                mCamera.setParameters(mCamera.getParameters());
+                mCamera.startPreview();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);//data是字节数据，将其解析成位图
+                if (mCurrentCameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    if (mDeviceOrientation == TOP) {
+                        bitmap = BitmapUtils.rotateNewBitmap(bitmap, 90.0f);
+                    } else if (mDeviceOrientation == RIGHT) {
+                        bitmap = BitmapUtils.rotateNewBitmap(bitmap, 180.0f);
+                    } else if (mDeviceOrientation == BOTTOM) {
+                        bitmap = BitmapUtils.rotateNewBitmap(bitmap, 270.0f);
+                    }
+                } else if (mCurrentCameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                    if (mDeviceOrientation == TOP) {
+                        bitmap = BitmapUtils.rotateNewBitmap(bitmap, 270.0f);
+                    } else if (mDeviceOrientation == RIGHT) {
+                        bitmap = BitmapUtils.rotateNewBitmap(bitmap, 180.0f);
+                    } else if (mDeviceOrientation == BOTTOM) {
+                        bitmap = BitmapUtils.rotateNewBitmap(bitmap, 90.0f);
+                    }
+                }
+                mOnCameraActionCallback.onTakePictureComplete(bitmap);
+            }
+        }
+    };
+
+
 }

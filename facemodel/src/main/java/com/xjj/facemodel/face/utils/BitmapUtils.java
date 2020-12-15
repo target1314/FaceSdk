@@ -166,6 +166,25 @@ public final class BitmapUtils {
     }
 
     /**
+     * 根据从数据中读到的方向旋转图片
+     *
+     * @param orientation 图片方向
+     * @param bitmap      要旋转的bitmap
+     * @return 旋转后的图片
+     */
+    public static Bitmap rotateNewBitmap(Bitmap bitmap, float orientation) {
+        Bitmap transformed;
+        Matrix m = new Matrix();
+        if (orientation == 0) {
+            transformed = bitmap;
+        } else {
+            m.setRotate(orientation);
+            transformed = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+        }
+        return transformed;
+    }
+
+    /**
      * 获取无损压缩图片合适的压缩比例
      *
      * @param options        图片的一些设置项

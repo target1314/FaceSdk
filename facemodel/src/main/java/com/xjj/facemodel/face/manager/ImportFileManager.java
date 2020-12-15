@@ -199,7 +199,7 @@ public class ImportFileManager {
                         }*/
 
                         // 7、根据姓名查询数据库与文件中对应的姓名是否相等，如果相等，则直接过滤
-                        List<User> listUsers = FaceApi.getInstance().getUserListByUserName(userName);
+                     /*   List<User> listUsers = FaceApi.getInstance().getUserListByUserName(userName);
                         if (listUsers != null && listUsers.size() > 0) {
                             Log.i(TAG, "与之前图片名称相同");
                             mFinishCount++;
@@ -208,7 +208,7 @@ public class ImportFileManager {
                             updateProgress(mTotalCount, mSuccessCount, mFailCount,
                                     ((float) mFinishCount / (float) mTotalCount));
                             continue;
-                        }
+                        }*/
 
                         // 8、根据图片的路径将图片转成Bitmap
                         Bitmap bitmap = BitmapFactory.decodeFile(picFiles[i].getAbsolutePath());
