@@ -262,4 +262,16 @@ public class FileUtils {
         return result;
     }
 
+    /**
+     * @param schoolId
+     * @return
+     */
+    public static boolean isFaceFile(String schoolId) {
+        File fileName = FileUtils.isFileExist(FileUtils.getBatchImportDirectory().getPath(), schoolId);
+        if (!Preconditions.isNullOrEmpty(fileName)) {
+            return true;
+        }
+        return false;
+    }
+
 }
