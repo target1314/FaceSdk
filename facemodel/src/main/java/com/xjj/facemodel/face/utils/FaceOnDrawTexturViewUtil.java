@@ -212,8 +212,8 @@ public class FaceOnDrawTexturViewUtil {
             }
             if ((faceID == livenessModel.getTrackFaceInfo()[0].faceID && mUser != null)
                     || faceID != livenessModel.getTrackFaceInfo()[0].faceID) {
-                paint.setColor(Color.parseColor("#00ff00"));
-                paintBg.setColor(Color.parseColor("#00ff00"));
+                paint.setColor(Color.parseColor("#108EE9"));
+                paintBg.setColor(Color.parseColor("#108EE9"));
             }
         } else {
             if (mUser == null) {
@@ -222,8 +222,8 @@ public class FaceOnDrawTexturViewUtil {
                 paintBg.setColor(Color.parseColor("#FEC133"));
             } else {
                 faceID = livenessModel.getTrackFaceInfo()[0].faceID;
-                paint.setColor(Color.parseColor("#00ff00"));
-                paintBg.setColor(Color.parseColor("#00ff00"));
+                paint.setColor(Color.parseColor("#108EE9"));
+                paintBg.setColor(Color.parseColor("#108EE9"));
             }
         }
     }
