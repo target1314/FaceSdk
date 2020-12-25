@@ -61,7 +61,7 @@ public class ImportFileManager {
     /**
      * 开始批量导入
      */
-    public void batchImport() {
+    public void batchImport(final boolean isUpdate) {
         // 1、获取导入目录 /sdcard/Face-Import
         File batchImportDir = FileUtils.getBatchImportDirectory();
         // 2、遍历该目录下的所有文件
@@ -85,7 +85,7 @@ public class ImportFileManager {
         }
 
         // 开启线程导入图片
-        asyncImport(picFiles, batchImportDir, zipFile);
+        asyncImport(picFiles, batchImportDir, zipFile,isUpdate);
     }
 
     public void setIsNeedImport(boolean isNeedImport) {
@@ -97,7 +97,7 @@ public class ImportFileManager {
      *
      * @param picFiles 要导入的图片集
      */
-    private void asyncImport(final File[] picFiles, final File batchFaceDir, final File zipFile) {
+    private void asyncImport(final File[] picFiles, final File batchFaceDir, final File zipFile, final boolean isUpdate) {
         mIsNeedImport = true;     // 判断是否需要导入
         mFinishCount = 0;         // 已完成的图片数量
         mSuccessCount = 0;        // 已导入成功的图片数量
@@ -199,16 +199,18 @@ public class ImportFileManager {
                         }*/
 
                         // 7、根据姓名查询数据库与文件中对应的姓名是否相等，如果相等，则直接过滤
-                     /*   List<User> listUsers = FaceApi.getInstance().getUserListByUserName(userName);
-                        if (listUsers != null && listUsers.size() > 0) {
-                            Log.i(TAG, "与之前图片名称相同");
-                            mFinishCount++;
-                            mFailCount++;
-                            // 更新进度
-                            updateProgress(mTotalCount, mSuccessCount, mFailCount,
-                                    ((float) mFinishCount / (float) mTotalCount));
-                            continue;
-                        }*/
+                        if (!isUpdate) {
+                            List<User> listUsers = FaceApi.getInstance().getUserListByUserName(userName);
+                            if (listUsers != null && listUsers.size() > 0) {
+                                Log.i(TAG, "与之前图片名称相同");
+                                mFinishCount++;
+                                mFailCount++;
+                                // 更新进度
+                                updateProgress(mTotalCount, mSuccessCount, mFailCount,
+                                        ((float) mFinishCount / (float) mTotalCount));
+                                continue;
+                            }
+                        }
 
                         // 8、根据图片的路径将图片转成Bitmap
                         Bitmap bitmap = BitmapFactory.decodeFile(picFiles[i].getAbsolutePath());
