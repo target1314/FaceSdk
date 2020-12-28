@@ -36,7 +36,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.+'
     implementation files('libs/Msc.jar')
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation files('libs/FaceSDK-5.0.jar')
