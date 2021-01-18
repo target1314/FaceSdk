@@ -85,7 +85,7 @@ public class ImportFileManager {
         }
 
         // 开启线程导入图片
-        asyncImport(picFiles, batchImportDir, zipFile,isUpdate);
+        asyncImport(picFiles, batchImportDir, zipFile, isUpdate);
     }
 
     public void setIsNeedImport(boolean isNeedImport) {
@@ -175,9 +175,10 @@ public class ImportFileManager {
                             Log.e(TAG, "图片后缀不满足要求");
                             mFinishCount++;
                             mFailCount++;
+                            Log.e(TAG, "失败图片mFailCount===" + mFailCount);
                             // 更新进度
-                            updateProgress(mTotalCount, mSuccessCount, mFailCount,
-                                    ((float) mFinishCount / (float) mTotalCount));
+                            /*updateProgress(mTotalCount, mSuccessCount, mFailCount,
+                                    ((float) mFinishCount / (float) mTotalCount));*/
                             continue;
                         }
 
