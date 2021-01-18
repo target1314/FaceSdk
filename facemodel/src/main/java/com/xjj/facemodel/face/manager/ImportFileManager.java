@@ -206,9 +206,10 @@ public class ImportFileManager {
                                 Log.i(TAG, "与之前图片名称相同");
                                 mFinishCount++;
                                 mFailCount++;
-                                // 更新进度
+                                Log.e(TAG, "失败图片mFailCount===" + mFailCount);
+                           /*     // 更新进度
                                 updateProgress(mTotalCount, mSuccessCount, mFailCount,
-                                        ((float) mFinishCount / (float) mTotalCount));
+                                        ((float) mFinishCount / (float) mTotalCount));*/
                                 continue;
                             }
                         }
