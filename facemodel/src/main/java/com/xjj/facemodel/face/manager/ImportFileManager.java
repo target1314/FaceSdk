@@ -2,6 +2,7 @@ package com.xjj.facemodel.face.manager;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.idl.main.facesdk.model.BDFaceSDKCommon;
@@ -120,13 +121,16 @@ public class ImportFileManager {
                     }
 
                     // 解压
-                    boolean zipSuccess = ZipUtils.unZipFolder(zipFile.getAbsolutePath(), batchFaceDir.toString());
-                    if (!zipSuccess) {
-                        if (mImportListener != null) {
-                            mImportListener.showToastMessage("解压失败");
+                    if (!TextUtils.isEmpty(zipFile.getAbsolutePath())){
+                        boolean zipSuccess = ZipUtils.unZipFolder(zipFile.getAbsolutePath(), batchFaceDir.toString());
+                        if (!zipSuccess) {
+                            if (mImportListener != null) {
+                                mImportListener.showToastMessage("解压失败");
+                            }
+                            return;
                         }
-                        return;
                     }
+
                     // 删除zip文件
                     FileUtils.deleteFile(zipFile.getPath());
                     LogUtils.i(TAG, "解压成功");
