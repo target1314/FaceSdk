@@ -76,17 +76,19 @@ public class ImportFileManager {
         }
 
         // 判断Face.zip是否存在
-        File zipFile = FileUtils.isFileExist(batchImportDir.getPath(), "Face.zip");
-        if (zipFile == null) {
-            LogUtils.i(TAG, "导入数据的文件夹没有Face.zip");
-            if (mImportListener != null) {
-                mImportListener.showToastMessage("搜索失败，请检查操作步骤并重试");
+        if (FileUtils.isFileExist(batchImportDir.getPath(), "Face.zip") != null) {
+            File zipFile = FileUtils.isFileExist(batchImportDir.getPath(), "Face.zip");
+            if (zipFile == null) {
+                LogUtils.i(TAG, "导入数据的文件夹没有Face.zip");
+                if (mImportListener != null) {
+                    mImportListener.showToastMessage("搜索失败，请检查操作步骤并重试");
+                }
+                return;
             }
-            return;
+            // 开启线程导入图片
+            asyncImport(picFiles, batchImportDir, zipFile, isUpdate);
         }
 
-        // 开启线程导入图片
-        asyncImport(picFiles, batchImportDir, zipFile, isUpdate);
     }
 
     public void setIsNeedImport(boolean isNeedImport) {
@@ -121,7 +123,7 @@ public class ImportFileManager {
                     }
 
                     // 解压
-                    if (!TextUtils.isEmpty(zipFile.getAbsolutePath())){
+                    if (!TextUtils.isEmpty(zipFile.getAbsolutePath())) {
                         boolean zipSuccess = ZipUtils.unZipFolder(zipFile.getAbsolutePath(), batchFaceDir.toString());
                         if (!zipSuccess) {
                             if (mImportListener != null) {
