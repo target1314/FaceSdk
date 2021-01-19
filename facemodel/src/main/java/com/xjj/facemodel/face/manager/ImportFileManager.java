@@ -123,7 +123,7 @@ public class ImportFileManager {
                     }
 
                     // 解压
-                    if (!TextUtils.isEmpty(zipFile.getAbsolutePath())) {
+                    if (!TextUtils.isEmpty(zipFile.getAbsolutePath()) && batchFaceDir != null) {
                         boolean zipSuccess = ZipUtils.unZipFolder(zipFile.getAbsolutePath(), batchFaceDir.toString());
                         if (!zipSuccess) {
                             if (mImportListener != null) {
