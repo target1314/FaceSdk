@@ -107,7 +107,7 @@ public class ImportFileManager {
         mFailCount = 0;           // 已导入失败的图片数量
 
         if (mExecutorService == null) {
-            mExecutorService = Executors.newSingleThreadExecutor();
+            mExecutorService = Executors.newFixedThreadPool(10);
         }
 
         mFuture = mExecutorService.submit(new Runnable() {
@@ -164,7 +164,7 @@ public class ImportFileManager {
                         mImportListener.showProgressView();
                     }
 
-                    Thread.sleep(400);
+                    Thread.sleep(500);
 
                     mTotalCount = picFiles.length;  // 总图片数
 
